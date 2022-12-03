@@ -1,7 +1,21 @@
 import logo from './logo.svg';
 import './App.css';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
 
 function App() {
+  const [posts, setPosts] = useState([])
+
+  useEffect(() => {
+    axios.get('https://2y6i6tqn41.execute-api.ap-northeast-1.amazonaws.com/threads')
+      .then(res => {
+        setPosts(res.data);
+        console.log(res.data);
+      })
+  }, [])
+
+
   return (
     <div className="App">
       <header className="App-header">
@@ -18,6 +32,12 @@ function App() {
           Learn React
         </a>
       </header>
+
+      <ul>
+        {
+          posts.map(post => <li key={post.id}> {post.title} </li>)
+        }
+      </ul>
     </div>
   );
 }
